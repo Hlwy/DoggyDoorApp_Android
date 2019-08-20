@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools" >
+
+    <item
+        android:id="@+id/search"
+        android:icon="@drawable/baseline_settings_black_18dp"
+        android:title="text"
+        app:showAsAction="always"
+        tools:ignore="AlwaysShowAction,HardcodedText" />
+    <item
+        android:id="@+id/debug"
+        android:icon="@drawable/baseline_android_black_18dp"
+        app:showAsAction="always"
+        android:title="text"
+        tools:ignore="AlwaysShowAction,HardcodedText" />
+
+    <item
+        android:id="@+id/connect"
+        android:icon="@drawable/ic_phonelink_ring_black_18dp"
+        app:showAsAction="always"
+        android:title="text"
+        tools:ignore="AlwaysShowAction,HardcodedText" />
+
+</menu>

@@ -1,0 +1,894 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:fitsSystemWindows="false"
+    tools:context=".MainActivity">
+
+    <RelativeLayout
+        android:id="@+id/RelativeLayout11"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="0dp"
+        android:layout_marginBottom="0dp"
+        android:background="@android:drawable/editbox_dropdown_light_frame"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/deviceLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:text="@string/device" />
+
+        <TextView
+            android:id="@+id/deviceName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginStart="54dp"
+            android:text="@string/no_device"
+            android:textAppearance="?android:attr/textAppearanceSmall" />
+
+        <TextView
+            android:id="@+id/rssival"
+            android:layout_width="49dp"
+            android:layout_height="20dp"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
+            android:text="_"
+            android:textAppearance="?android:attr/textAppearanceMedium" />
+
+    </RelativeLayout>
+
+    <LinearLayout
+        android:id="@+id/linearLayout4"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="top"
+        android:baselineAligned="false"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/btn_scan"
+            android:layout_width="133dp"
+            android:layout_height="40dp"
+            android:padding="12dp"
+            android:text="@string/connect_state" />
+
+        <Button
+            android:id="@+id/btn_add_dev"
+            android:layout_width="102dp"
+            android:layout_height="40dp"
+            android:layout_weight="1"
+            android:padding="12dp"
+            android:text="Add New Tag" />
+
+        <Button
+            android:id="@+id/btn_del_dev"
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
+            android:layout_weight="1"
+            android:padding="12dp"
+            android:text="@string/remove" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:orientation="horizontal">
+
+        <android.support.constraint.ConstraintLayout
+            android:id="@+id/relativeLayout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:id="@+id/textView9"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:background="?attr/actionModeBackground"
+                android:text="                                     Known Pet Tags"
+                android:textAlignment="center"
+                android:textColor="@android:color/black"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:layout_conversion_wrapHeight="63"
+                tools:layout_conversion_wrapWidth="272" />
+
+            <ListView
+                android:id="@+id/listPetTags"
+                android:layout_width="match_parent"
+                android:layout_height="100dp"
+                android:background="@android:drawable/screen_background_light_transparent"
+                android:choiceMode="singleChoice"
+                android:clickable="true"
+                android:drawSelectorOnTop="false"
+                android:footerDividersEnabled="false"
+                android:headerDividersEnabled="false"
+                android:paddingTop="0dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textView9"
+                tools:layout_conversion_wrapHeight="263"
+                tools:layout_conversion_wrapWidth="1080" />
+
+            <TextView
+                android:id="@+id/empty"
+                android:layout_width="wrap_content"
+                android:layout_height="18dp"
+                android:layout_marginStart="305dp"
+                android:layout_marginTop="1dp"
+                android:text=" "
+                android:textColor="@android:color/black"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:layout_conversion_wrapHeight="47"
+                tools:layout_conversion_wrapWidth="9" />
+
+            <LinearLayout
+                android:id="@+id/linearLayout3"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:orientation="vertical"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/listPetTags"
+                app:layout_constraintVertical_bias="0.0">
+
+                <android.support.constraint.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center|top"
+                    android:background="?attr/colorControlActivated"
+                    app:layout_constraintBottom_toTopOf="@+id/linearLayout64"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent">
+
+                    <TextView
+                        android:id="@+id/txtAlias"
+                        android:layout_width="100dp"
+                        android:layout_height="23dp"
+                        android:layout_marginStart="16dp"
+                        android:layout_marginTop="8dp"
+                        android:background="@drawable/editbox_disabled"
+                        android:textColor="@color/black"
+                        android:textSize="12sp"
+                        app:layout_constraintStart_toEndOf="@+id/textView16"
+                        app:layout_constraintTop_toBottomOf="@+id/linearLayout2" />
+
+                    <TextView
+                        android:id="@+id/txtRssiThresh"
+                        android:layout_width="100dp"
+                        android:layout_height="23dp"
+                        android:layout_marginStart="6dp"
+                        android:layout_marginTop="8dp"
+                        android:layout_marginEnd="6dp"
+                        android:background="@drawable/editbox_disabled"
+                        android:textColor="@color/black"
+                        android:textSize="12sp"
+                        app:layout_constraintBottom_toBottomOf="@+id/editRssiThresh"
+                        app:layout_constraintEnd_toStartOf="@+id/editRssiThresh"
+                        app:layout_constraintStart_toEndOf="@+id/textView17"
+                        app:layout_constraintTop_toBottomOf="@+id/txtAlias" />
+
+                    <TextView
+                        android:id="@+id/txtDebounceThresh"
+                        android:layout_width="100dp"
+                        android:layout_height="23dp"
+                        android:layout_marginStart="8dp"
+                        android:layout_marginTop="8dp"
+                        android:layout_marginEnd="8dp"
+                        android:background="@drawable/editbox_disabled"
+                        android:textColor="@color/black"
+                        android:textSize="12sp"
+                        app:layout_constraintBottom_toBottomOf="@+id/editDebounceThresh"
+                        app:layout_constraintEnd_toStartOf="@+id/editDebounceThresh"
+                        app:layout_constraintStart_toEndOf="@+id/textView18"
+                        app:layout_constraintTop_toBottomOf="@+id/txtRssiThresh" />
+
+                    <Button
+                        android:id="@+id/btn_set_alias"
+                        android:layout_width="40dp"
+                        android:layout_height="38dp"
+                        android:layout_marginStart="2dp"
+                        android:text="Set"
+                        android:textSize="8sp"
+                        app:layout_constraintStart_toEndOf="@+id/btn_get_alias"
+                        app:layout_constraintTop_toBottomOf="@+id/linearLayout2" />
+
+                    <TextView
+                        android:id="@+id/txtRssi"
+                        android:layout_width="56dp"
+                        android:layout_height="23dp"
+                        android:layout_marginStart="8dp"
+                        android:background="@drawable/editbox_disabled"
+                        android:textSize="12sp"
+                        app:layout_constraintStart_toEndOf="@+id/txtTimesSeen"
+                        app:layout_constraintTop_toBottomOf="@+id/textView21" />
+
+                    <TextView
+                        android:id="@+id/txtTimesSeen"
+                        android:layout_width="0dp"
+                        android:layout_height="23dp"
+                        android:background="@drawable/editbox_disabled"
+                        android:textSize="12sp"
+                        app:layout_constraintEnd_toEndOf="@+id/textView19"
+                        app:layout_constraintStart_toStartOf="@+id/textView19"
+                        app:layout_constraintTop_toBottomOf="@+id/textView19" />
+
+                    <EditText
+                        android:id="@+id/editDebounceThresh"
+                        android:layout_width="100dp"
+                        android:layout_height="23dp"
+                        android:layout_marginTop="8dp"
+                        android:background="@drawable/editbox_enabled"
+                        android:enabled="true"
+                        android:inputType="numberSigned"
+                        android:textSize="12sp"
+                        app:layout_constraintStart_toStartOf="@+id/editRssiThresh"
+                        app:layout_constraintTop_toBottomOf="@+id/editRssiThresh" />
+
+                    <EditText
+                        android:id="@+id/editAlias"
+                        android:layout_width="100dp"
+                        android:layout_height="24dp"
+                        android:layout_marginStart="4dp"
+                        android:background="@drawable/editbox_enabled"
+                        android:enabled="true"
+                        android:textSize="12sp"
+                        app:layout_constraintBottom_toBottomOf="@+id/txtAlias"
+                        app:layout_constraintStart_toEndOf="@+id/txtAlias" />
+
+                    <TextView
+                        android:id="@+id/textView21"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:text="     RSSI"
+                        android:textColor="@color/black"
+                        android:textSize="12sp"
+                        android:textStyle="bold"
+                        app:layout_constraintEnd_toEndOf="@+id/txtRssi"
+                        app:layout_constraintStart_toStartOf="@+id/txtRssi"
+                        app:layout_constraintTop_toTopOf="@+id/textView19" />
+
+                    <EditText
+                        android:id="@+id/editRssiThresh"
+                        android:layout_width="100dp"
+                        android:layout_height="23dp"
+                        android:layout_marginTop="8dp"
+                        android:background="@drawable/editbox_enabled"
+                        android:enabled="true"
+                        android:inputType="numberSigned"
+                        android:textSize="12sp"
+                        app:layout_constraintStart_toStartOf="@+id/editAlias"
+                        app:layout_constraintTop_toBottomOf="@+id/editAlias" />
+
+
+                    <TextView
+                        android:id="@+id/textView16"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="8dp"
+                        android:layout_marginTop="8dp"
+                        android:text="Alias"
+                        android:textAlignment="center"
+                        android:textColor="@color/black"
+                        android:textStyle="bold"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/linearLayout2" />
+
+                    <TextView
+                        android:id="@+id/textView17"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="8dp"
+                        android:layout_marginTop="8dp"
+                        android:text="   RSSI\nThreshold"
+                        android:textAlignment="center"
+                        android:textColor="@color/black"
+                        android:textSize="10sp"
+                        android:textStyle="bold"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/textView16" />
+
+                    <TextView
+                        android:id="@+id/textView18"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="8dp"
+                        android:layout_marginTop="8dp"
+                        android:text="Debounce\nThreshold"
+                        android:textColor="@color/black"
+                        android:textSize="10sp"
+                        android:textStyle="bold"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/textView17" />
+
+                    <TextView
+                        android:id="@+id/textView19"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="8dp"
+                        android:layout_marginTop="6dp"
+                        android:text="Times  Seen"
+                        android:textAlignment="center"
+                        android:textColor="@color/black"
+                        android:textSize="12sp"
+                        android:textStyle="bold"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/textView18" />
+
+                    <Button
+                        android:id="@+id/btn_get_alias"
+                        android:layout_width="40dp"
+                        android:layout_height="36dp"
+                        android:layout_marginStart="4dp"
+                        android:text="Get"
+                        android:textSize="8sp"
+                        app:layout_constraintStart_toEndOf="@+id/editAlias"
+                        app:layout_constraintTop_toBottomOf="@+id/linearLayout2" />
+
+                    <Button
+                        android:id="@+id/btn_get_rssi_thresh"
+                        android:layout_width="40dp"
+                        android:layout_height="36dp"
+                        android:layout_marginStart="4dp"
+                        android:text="Get"
+                        android:textSize="8sp"
+                        app:layout_constraintStart_toEndOf="@+id/editRssiThresh"
+                        app:layout_constraintTop_toBottomOf="@+id/editAlias" />
+
+                    <Button
+                        android:id="@+id/btn_get_debounce_thresh"
+                        android:layout_width="40dp"
+                        android:layout_height="36dp"
+                        android:layout_marginStart="4dp"
+                        android:text="Get"
+                        android:textSize="8sp"
+                        app:layout_constraintStart_toEndOf="@+id/editDebounceThresh"
+                        app:layout_constraintTop_toBottomOf="@+id/editRssiThresh" />
+
+                    <Button
+                        android:id="@+id/btn_set_debounce_thresh"
+                        android:layout_width="40dp"
+                        android:layout_height="36dp"
+                        android:layout_marginStart="4dp"
+                        android:text="Set"
+                        android:textSize="8sp"
+                        app:layout_constraintStart_toEndOf="@+id/btn_get_debounce_thresh"
+                        app:layout_constraintTop_toTopOf="@+id/btn_get_debounce_thresh" />
+
+                    <Button
+                        android:id="@+id/btn_set_rssi_thresh"
+                        android:layout_width="40dp"
+                        android:layout_height="36dp"
+                        android:layout_marginStart="2dp"
+                        android:text="Set"
+                        android:textSize="8sp"
+                        app:layout_constraintStart_toEndOf="@+id/btn_get_rssi_thresh"
+                        app:layout_constraintTop_toTopOf="@+id/btn_get_rssi_thresh" />
+
+                    <Button
+                        android:id="@+id/btn_refresh"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="8dp"
+                        android:text="Refresh All"
+                        app:layout_constraintBottom_toBottomOf="@+id/txtRssi"
+                        app:layout_constraintEnd_toEndOf="@+id/btn_set_debounce_thresh"
+                        app:layout_constraintStart_toEndOf="@+id/txtRssi"
+                        app:layout_constraintTop_toBottomOf="@+id/btn_set_debounce_thresh" />
+
+                    <LinearLayout
+                        android:id="@+id/linearLayout2"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/textlines"
+                        android:orientation="horizontal"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent">
+
+                        <TextView
+                            android:id="@+id/textView15"
+                            android:layout_width="wrap_content"
+                            android:layout_height="18dp"
+                            android:layout_alignParentStart="true"
+                            android:layout_alignParentTop="true"
+                            android:layout_marginStart="0dp"
+                            android:layout_marginLeft="0dp"
+                            android:singleLine="true"
+                            android:text="[Selected Pet Tag]"
+                            android:textAlignment="textStart"
+                            android:textColor="@color/black"
+                            android:textStyle="bold"
+                            app:layout_constraintStart_toStartOf="parent" />
+
+                        <TextView
+                            android:id="@+id/textView4"
+                            android:layout_width="27dp"
+                            android:layout_height="19dp"
+                            android:text="ID"
+                            android:textAlignment="center"
+                            android:textColor="@color/black"
+                            android:textSize="10sp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:id="@+id/txtId"
+                            android:layout_width="64dp"
+                            android:layout_height="wrap_content"
+                            android:textColor="@color/black"
+                            android:textSize="10sp" />
+
+                        <TextView
+                            android:id="@+id/textView12"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="  Address  "
+                            android:textAlignment="center"
+                            android:textColor="@color/black"
+                            android:textSize="10sp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:id="@+id/txtAddr"
+                            android:layout_width="92dp"
+                            android:layout_height="19dp"
+                            android:textColor="@color/black"
+                            android:textSize="10sp" />
+
+                    </LinearLayout>
+                </android.support.constraint.ConstraintLayout>
+
+                <LinearLayout
+                    android:id="@+id/linearLayout64"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="4.11"
+                    android:baselineAligned="false"
+                    android:orientation="horizontal">
+
+                    <android.support.constraint.ConstraintLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:minWidth="10dp">
+
+                        <android.support.constraint.ConstraintLayout
+                            android:id="@+id/linearLayout"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:background="@drawable/textlines_box"
+                            android:orientation="horizontal"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintHorizontal_bias="1.0"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent">
+
+                            <TextView
+                                android:id="@+id/textView"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="8dp"
+                                android:layout_marginTop="8dp"
+                                android:singleLine="true"
+                                android:text="[Doggy Door]"
+                                android:textAlignment="center"
+                                android:textColor="@color/black"
+                                android:textStyle="bold"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toTopOf="parent"
+                                tools:layout_conversion_absoluteHeight="19dp"
+                                tools:layout_conversion_absoluteWidth="93dp"
+                                tools:layout_conversion_wrapHeight="50"
+                                tools:layout_conversion_wrapWidth="0" />
+
+                            <TextView
+                                android:id="@+id/txtBatLbl"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="12dp"
+                                android:text="Battery:"
+                                android:textColor="@color/black"
+                                android:textSize="12sp"
+                                app:layout_constraintStart_toEndOf="@+id/textView"
+                                app:layout_constraintTop_toTopOf="parent"
+                                tools:layout_conversion_absoluteHeight="16dp"
+                                tools:layout_conversion_absoluteWidth="41dp"
+                                tools:layout_conversion_wrapHeight="309"
+                                tools:layout_conversion_wrapWidth="0" />
+
+                            <TextView
+                                android:id="@+id/txtBatLife"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="2dp"
+                                android:text="4.2V (100%)"
+                                android:textAlignment="center"
+                                android:textColor="@color/black"
+                                android:textSize="12sp"
+                                app:layout_constraintStart_toStartOf="@+id/txtBatLbl"
+                                app:layout_constraintTop_toBottomOf="@+id/txtBatLbl"
+                                tools:layout_conversion_absoluteHeight="16dp"
+                                tools:layout_conversion_absoluteWidth="65dp"
+                                tools:layout_conversion_wrapHeight="385"
+                                tools:layout_conversion_wrapWidth="0" />
+
+                            <TextView
+                                android:id="@+id/txtChargeStatus"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="8dp"
+                                android:layout_marginEnd="8dp"
+                                android:text="Charging"
+                                android:textColor="@color/black"
+                                android:textSize="12sp"
+                                app:layout_constraintEnd_toStartOf="@+id/ic_dd_refresh"
+                                app:layout_constraintStart_toEndOf="@+id/txtBatLbl"
+                                app:layout_constraintTop_toTopOf="parent"
+                                tools:layout_conversion_absoluteHeight="16dp"
+                                tools:layout_conversion_absoluteWidth="49dp"
+                                tools:layout_conversion_wrapHeight="309"
+                                tools:layout_conversion_wrapWidth="0" />
+
+                            <TextView
+                                android:id="@+id/ic_dd_refresh"
+                                android:layout_width="33dp"
+                                android:layout_height="32dp"
+                                android:layout_marginEnd="8dp"
+                                android:background="@drawable/ic_sync_black_24dp"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintTop_toTopOf="parent"
+                                tools:layout_conversion_absoluteHeight="19dp"
+                                tools:layout_conversion_absoluteWidth="16dp"
+                                tools:layout_conversion_wrapHeight="50"
+                                tools:layout_conversion_wrapWidth="0" />
+                        </android.support.constraint.ConstraintLayout>
+
+                        <android.support.constraint.ConstraintLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintHorizontal_bias="1.0"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/constraintLayout2">
+
+                            <Button
+                                android:id="@+id/btn_get_enc_limit"
+                                android:layout_width="40dp"
+                                android:layout_height="30dp"
+                                android:text="Get"
+                                android:textSize="8sp"
+                                app:layout_constraintBottom_toBottomOf="@+id/editEncLimit"
+                                app:layout_constraintStart_toEndOf="@+id/editEncLimit"
+                                app:layout_constraintTop_toTopOf="parent" />
+
+                            <EditText
+                                android:id="@+id/editEncLimit"
+                                android:layout_width="75dp"
+                                android:layout_height="23dp"
+                                android:layout_marginStart="40dp"
+                                android:layout_marginTop="4dp"
+                                android:background="@drawable/editbox_enabled"
+                                android:enabled="true"
+                                android:inputType="numberSigned"
+                                android:textSize="12sp"
+                                app:layout_constraintStart_toEndOf="@+id/txtEncLimit"
+                                app:layout_constraintTop_toTopOf="parent" />
+
+                            <EditText
+                                android:id="@+id/editSpd"
+                                android:layout_width="75dp"
+                                android:layout_height="23dp"
+                                android:layout_marginStart="40dp"
+                                android:layout_marginTop="2dp"
+                                android:background="@drawable/editbox_enabled"
+                                android:enabled="true"
+                                android:inputType="numberSigned|numberDecimal"
+                                android:textSize="12sp"
+                                app:layout_constraintStart_toEndOf="@+id/txtSpd"
+                                app:layout_constraintTop_toBottomOf="@+id/txtEncLimit" />
+
+                            <Button
+                                android:id="@+id/btn_get_spd"
+                                android:layout_width="40dp"
+                                android:layout_height="30dp"
+                                android:text="Get"
+                                android:textSize="8sp"
+                                app:layout_constraintBottom_toBottomOf="@+id/editSpd"
+                                app:layout_constraintStart_toEndOf="@+id/editSpd"
+                                app:layout_constraintTop_toBottomOf="@+id/editEncLimit" />
+
+                            <TextView
+                                android:id="@+id/txtSpd"
+                                android:layout_width="75dp"
+                                android:layout_height="23dp"
+                                android:layout_marginStart="2dp"
+                                android:layout_marginTop="2dp"
+                                android:background="@drawable/editbox_disabled"
+                                android:textSize="12sp"
+                                app:layout_constraintStart_toEndOf="@+id/textView20"
+                                app:layout_constraintTop_toTopOf="@+id/textView20" />
+
+                            <TextView
+                                android:id="@+id/textView20"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="2dp"
+                                android:layout_marginTop="2dp"
+                                android:text=" Motor\n Speed"
+                                android:textColor="@color/black"
+                                android:textSize="10sp"
+                                android:textStyle="bold"
+                                app:layout_constraintEnd_toEndOf="@+id/textView3"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toBottomOf="@+id/textView3" />
+
+                            <TextView
+                                android:id="@+id/textView3"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:text="Encoder\n  Limit"
+                                android:textAlignment="center"
+                                android:textColor="@color/black"
+                                android:textSize="10sp"
+                                android:textStyle="bold"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toTopOf="parent" />
+
+                            <TextView
+                                android:id="@+id/txtEncLimit"
+                                android:layout_width="75dp"
+                                android:layout_height="23dp"
+                                android:layout_marginStart="2dp"
+                                android:layout_marginTop="4dp"
+                                android:background="@drawable/editbox_disabled"
+                                android:textSize="12sp"
+                                app:layout_constraintStart_toEndOf="@+id/textView3"
+                                app:layout_constraintTop_toTopOf="parent" />
+
+                            <Button
+                                android:id="@+id/btn_set_enc_limit"
+                                android:layout_width="40dp"
+                                android:layout_height="30dp"
+                                android:text="Set"
+                                android:textSize="8sp"
+                                app:layout_constraintBottom_toBottomOf="@+id/btn_get_enc_limit"
+                                app:layout_constraintStart_toEndOf="@+id/btn_get_enc_limit"
+                                app:layout_constraintTop_toTopOf="parent" />
+
+                            <Button
+                                android:id="@+id/btn_set_spd"
+                                android:layout_width="40dp"
+                                android:layout_height="30dp"
+                                android:text="Set"
+                                android:textSize="8sp"
+                                app:layout_constraintBottom_toBottomOf="@+id/btn_get_spd"
+                                app:layout_constraintStart_toEndOf="@+id/btn_get_spd"
+                                app:layout_constraintTop_toTopOf="@+id/btn_get_spd" />
+
+                            <TextView
+                                android:id="@+id/textView27"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="2dp"
+                                android:layout_marginTop="4dp"
+                                android:layout_marginEnd="2dp"
+                                android:text=" % Max"
+                                android:textColor="@color/black"
+                                android:textSize="10sp"
+                                app:layout_constraintEnd_toStartOf="@+id/editSpd"
+                                app:layout_constraintStart_toEndOf="@+id/txtSpd"
+                                app:layout_constraintTop_toTopOf="@+id/txtSpd" />
+
+                            <TextView
+                                android:id="@+id/textView26"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="2dp"
+                                android:layout_marginTop="6dp"
+                                android:layout_marginEnd="2dp"
+                                android:text=" Ticks"
+                                android:textAlignment="center"
+                                android:textColor="@color/black"
+                                android:textSize="12sp"
+                                app:layout_constraintEnd_toStartOf="@+id/editEncLimit"
+                                app:layout_constraintStart_toEndOf="@+id/txtEncLimit"
+                                app:layout_constraintTop_toTopOf="parent" />
+                        </android.support.constraint.ConstraintLayout>
+
+                        <android.support.constraint.ConstraintLayout
+                            android:id="@+id/constraintLayout2"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            app:layout_constraintEnd_toEndOf="@+id/constraintLayout"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/constraintLayout">
+
+                            <Button
+                                android:id="@+id/btn_stop_motor"
+                                android:layout_width="60dp"
+                                android:layout_height="0dp"
+                                android:layout_marginStart="8dp"
+                                android:layout_marginEnd="8dp"
+                                android:text="Stop"
+                                android:textSize="10sp"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintStart_toEndOf="@+id/swDoorLock"
+                                app:layout_constraintTop_toTopOf="parent" />
+
+                            <RadioGroup
+                                android:id="@+id/radioGroupOperation"
+                                android:layout_width="wrap_content"
+                                android:layout_height="33dp"
+                                android:layout_marginTop="8dp"
+                                android:checkedButton="@id/radioNormalOperation"
+                                android:orientation="horizontal"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toTopOf="parent">
+
+                                <RadioButton
+                                    android:id="@+id/radioNormalOperation"
+                                    android:layout_width="77dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="1"
+                                    android:text="Normal\nOperation"
+                                    android:textAlignment="center"
+                                    android:textSize="8sp" />
+
+                                <RadioButton
+                                    android:id="@+id/radioOpenOperation"
+                                    android:layout_width="66dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="1"
+                                    android:text="Force\nOpen"
+                                    android:textAlignment="center"
+                                    android:textSize="8sp" />
+
+                                <RadioButton
+                                    android:id="@+id/radioCloseOperation"
+                                    android:layout_width="65dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="1"
+                                    android:text="Force\nClose"
+                                    android:textAlignment="center"
+                                    android:textSize="8sp" />
+                            </RadioGroup>
+
+                            <Switch
+                                android:id="@+id/swDoorLock"
+                                android:layout_width="0dp"
+                                android:layout_height="26dp"
+                                android:layout_marginStart="8dp"
+                                android:text="Lock Door"
+                                android:textSize="12sp"
+                                app:layout_constraintStart_toEndOf="@+id/radioGroupOperation"
+                                app:layout_constraintTop_toTopOf="@+id/radioGroupOperation" />
+                        </android.support.constraint.ConstraintLayout>
+
+                        <android.support.constraint.ConstraintLayout
+                            android:id="@+id/constraintLayout"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintHorizontal_bias="0.0"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/linearLayout">
+
+                            <TextView
+                                android:id="@+id/led_bottom_switch"
+                                android:layout_width="23dp"
+                                android:layout_height="20dp"
+                                android:layout_marginTop="5dp"
+                                android:background="@android:drawable/presence_invisible"
+                                app:layout_constraintStart_toEndOf="@+id/textView28"
+                                app:layout_constraintTop_toTopOf="parent" />
+
+                            <TextView
+                                android:id="@+id/textView28"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="14dp"
+                                android:layout_marginTop="4dp"
+                                android:text="      Lower\nLimit Switch"
+                                android:textAlignment="center"
+                                android:textColor="#000000"
+                                android:textSize="8sp"
+                                android:textStyle="bold"
+                                app:layout_constraintStart_toEndOf="@+id/led_top_swtich"
+                                app:layout_constraintTop_toTopOf="parent" />
+
+                            <TextView
+                                android:id="@+id/textView30"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="14dp"
+                                android:layout_marginTop="8dp"
+                                android:text="Open"
+                                android:textAlignment="center"
+                                android:textColor="#000000"
+                                android:textSize="10sp"
+                                android:textStyle="bold"
+                                app:layout_constraintStart_toEndOf="@+id/led_lock_status"
+                                app:layout_constraintTop_toTopOf="parent" />
+
+                            <TextView
+                                android:id="@+id/led_lock_status"
+                                android:layout_width="23dp"
+                                android:layout_height="20dp"
+                                android:layout_marginTop="5dp"
+                                android:background="@android:drawable/presence_invisible"
+                                app:layout_constraintStart_toEndOf="@+id/textView24"
+                                app:layout_constraintTop_toTopOf="parent" />
+
+                            <TextView
+                                android:id="@+id/led_open_status"
+                                android:layout_width="23dp"
+                                android:layout_height="20dp"
+                                android:layout_marginTop="5dp"
+                                android:background="@android:drawable/presence_invisible"
+                                app:layout_constraintStart_toEndOf="@+id/textView30"
+                                app:layout_constraintTop_toTopOf="parent" />
+
+                            <TextView
+                                android:id="@+id/led_top_swtich"
+                                android:layout_width="22dp"
+                                android:layout_height="21dp"
+                                android:layout_marginTop="5dp"
+                                android:background="@android:drawable/presence_online"
+                                app:layout_constraintStart_toEndOf="@+id/textView25"
+                                app:layout_constraintTop_toTopOf="parent" />
+
+                            <TextView
+                                android:id="@+id/textView25"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="14dp"
+                                android:layout_marginTop="5dp"
+                                android:text="      Upper\nLimit Switch"
+                                android:textAlignment="center"
+                                android:textColor="#000000"
+                                android:textSize="8sp"
+                                android:textStyle="bold"
+                                app:layout_constraintStart_toEndOf="@+id/led_open_status"
+                                app:layout_constraintTop_toTopOf="parent" />
+
+                            <TextView
+                                android:id="@+id/textView24"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="8dp"
+                                android:layout_marginTop="8dp"
+                                android:text=" Locked"
+                                android:textAlignment="center"
+                                android:textColor="#000000"
+                                android:textSize="10sp"
+                                android:textStyle="bold"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toTopOf="parent" />
+                        </android.support.constraint.ConstraintLayout>
+
+                    </android.support.constraint.ConstraintLayout>
+
+                </LinearLayout>
+            </LinearLayout>
+        </android.support.constraint.ConstraintLayout>
+
+    </LinearLayout>
+
+
+</LinearLayout>

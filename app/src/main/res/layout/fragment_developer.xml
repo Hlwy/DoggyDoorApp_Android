@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical" >
+
+    <LinearLayout
+        android:id="@+id/linearLayout6"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/btn_scan"
+            android:layout_width="123dp"
+            android:layout_height="wrap_content"
+            android:padding="12dp"
+            android:text="@string/connect_state" />
+
+        <Button
+            android:id="@+id/btn_add_dev"
+            android:layout_width="45dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:padding="12dp"
+            android:text="@string/add" />
+
+        <Button
+            android:id="@+id/btn_del_dev"
+            android:layout_width="74dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:padding="12dp"
+            android:text="@string/remove" />
+
+        <Button
+            android:id="@+id/btn_query"
+            android:layout_width="66dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:padding="12dp"
+            android:text="@string/query" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/linearLayout3"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="0.31"
+        android:orientation="vertical">
+
+        <RelativeLayout
+            android:id="@+id/RelativeLayout1"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="4.11"
+            android:orientation="vertical">
+
+            <EditText
+                android:id="@+id/sendText"
+                android:layout_width="300dp"
+                android:layout_height="wrap_content"
+                android:layout_above="@+id/btn_cfg"
+                android:layout_alignParentStart="true"
+                android:ems="10"
+                android:enabled="false"
+                android:fontFamily="1"
+                android:inputType="text"
+                android:lines="1"
+                android:maxLength="300"
+                android:maxLines="1"
+                android:selectAllOnFocus="false"
+                android:shadowRadius="1"
+                android:singleLine="false" />
+
+            <Button
+                android:id="@+id/sendButton"
+                android:layout_width="83dp"
+                android:layout_height="40dp"
+                android:layout_alignParentEnd="true"
+                android:layout_alignTop="@+id/sendText"
+                android:enabled="false"
+                android:text="@string/send"
+                android:textAlignment="center"
+                android:textSize="10sp" />
+
+            <ListView
+                android:id="@+id/listMessage"
+                android:layout_width="match_parent"
+                android:layout_height="346dp"
+                android:layout_above="@+id/sendText"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentTop="true"
+                android:layout_marginBottom="2dp" />
+
+            <Button
+                android:id="@+id/btn_cfg"
+                android:layout_width="83dp"
+                android:layout_height="38dp"
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentStart="true"
+                android:enabled="true"
+                android:text="@string/cfg"
+                android:textSize="10sp" />
+
+            <Button
+                android:id="@+id/btn_clear"
+                android:layout_width="83dp"
+                android:layout_height="38dp"
+                android:layout_alignParentBottom="true"
+                android:layout_toEndOf="@+id/btn_cfg"
+                android:enabled="true"
+                android:text="@string/clear"
+                android:textSize="10sp" />
+
+        </RelativeLayout>
+    </LinearLayout>
+
+    <RelativeLayout
+        android:id="@+id/RelativeLayout11"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp"
+        android:layout_marginTop="10dp"
+        android:orientation="vertical" >
+
+        <TextView
+            android:id="@+id/deviceLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:text="@string/device" />
+
+        <TextView
+            android:id="@+id/deviceName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_marginLeft="18dp"
+            android:layout_toRightOf="@+id/deviceLabel"
+            android:text="@string/no_device"
+            android:textAppearance="?android:attr/textAppearanceSmall" />
+
+        <TextView
+            android:id="@+id/rssival"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentTop="true"
+            android:text="_"
+            android:textAppearance="?android:attr/textAppearanceMedium" />
+    </RelativeLayout>
+
+</LinearLayout>
