@@ -32,7 +32,7 @@ import java.util.HashMap;
 import java.util.ArrayList;
 
 public class AddDoggyTagActivity extends Activity {
-    public static final String LOGTAG = "AddDoggyTagActivity";
+    public static final String LOGTAG = "YEET.AddDoggyTagActivity";
     private TextView mEmptyList;
     private BluetoothAdapter mBluetoothAdapter;
 
@@ -114,6 +114,15 @@ public class AddDoggyTagActivity extends Activity {
         boolean deviceFound = false;
         for (BluetoothDevice listDev : deviceList) {
             if (listDev.getAddress().equals(device.getAddress())) {
+                deviceFound = true;
+                break;
+            }
+        }
+
+        for (BluetoothDevice listKnownDev : MainFragment.deviceList) {
+            Log.d(LOGTAG, "addDevice: Checking stored device [" + device.getAddress() + "]...\r\n");
+            if (listKnownDev.getAddress().equals(device.getAddress())) {
+                Log.d(LOGTAG, "addDevice: Found Device [" + device.getAddress() + "] in stored devices...\r\n");
                 deviceFound = true;
                 break;
             }

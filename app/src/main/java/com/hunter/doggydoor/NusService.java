@@ -21,10 +21,10 @@ import java.util.List;
 import java.util.UUID;
 
 public class NusService extends Service{
-    private final static String LOGTAG = "NusService";
+    private final static String LOGTAG = "YEET.NusService";
     private final static String PKGTAG = "com.hunter.doggydoor";
 
-    private BluetoothGatt mBluetoothGatt;
+    private static BluetoothGatt mBluetoothGatt;
     private BluetoothManager mBluetoothManager;
     private BluetoothAdapter mBluetoothAdapter;
     private String mBluetoothDeviceAddress;
@@ -221,7 +221,6 @@ public class NusService extends Service{
             return;
         }
         BluetoothGattService RxService = mBluetoothGatt.getService(RX_SERVICE_UUID);
-        Log.e(LOGTAG,"mBluetoothGatt null"+ mBluetoothGatt);
         if (RxService == null) {
             Log.e(LOGTAG,"Rx service not found!");
             broadcastUpdate(DEVICE_DOES_NOT_SUPPORT_UART);

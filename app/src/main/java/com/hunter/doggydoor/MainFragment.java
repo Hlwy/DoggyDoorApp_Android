@@ -37,7 +37,9 @@ import java.util.StringJoiner;
 
 public class MainFragment extends Fragment {
     /** *************    Constants    ****************** */
-    private static final String LOGTAG = "MainFragment";
+    private static final String LOGTAG = "YEET.MainFragment";
+    private static boolean debug_nus_io = false;
+
     public static final int UART_PROFILE_READY = 10;
     public static final int UART_PROFILE_CONNECTED = 20;
     public static final int UART_PROFILE_DISCONNECTED = 21;
@@ -45,9 +47,10 @@ public class MainFragment extends Fragment {
     private static Drawable picLedActive;
 
     /** *************    State Parameters    ****************** */
-    int mSelectedItem = -1;
+    public static int mSelectedItem = -1;
     private static Context mContext;
     public static boolean isConnectedToDd = false;
+    private static boolean flagMotorForceStopped = false;
     public static int mState = UART_PROFILE_DISCONNECTED;
     public static String connectedDevice = null;
     public static String btnConnectDisconnectText = "Connect";
@@ -72,8 +75,10 @@ public class MainFragment extends Fragment {
     private static ArrayList<String> deviceStrList;
 
     /** *************    Bluetooth Objects    ****************** */
+    public static String nAliasLbl = null;
     private static BluetoothDevice tmpDevice = null;
-    private static ArrayList<BluetoothDevice> deviceList;
+    public static ArrayList<BluetoothDevice> deviceList;
+    public static BluetoothDevice mLastBleCentralDevice = null;
 
     /** ********************************************************************************************
     *                                      GUI Elements
@@ -250,7 +255,6 @@ public class MainFragment extends Fragment {
             btnConnectDisconnect.setText("Connect");
         }
 
-
         btnConnectDisconnect.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -315,11 +319,10 @@ public class MainFragment extends Fragment {
             public void onClick(View v) {
                 if(!txtDevId.getText().equals("")){
                     Log.d(LOGTAG,"Getting Alias for device [" + txtDevId.getText() + "]...");
-//                    showMessage("Getting the alias for the selected pet tag [" + txtDevId.getText().toString() + "]...");
                     sendGetCommand(Helper.DD_CMD_TAG_ALIAS,txtDevId.getText().toString());
                 }
                 else{
-//                    showMessage("No target device selected. Please select the pet tag you wish to get the alias of.");
+                    showMessage(mContext,"No target device selected. Please select the pet tag you wish to get the alias of.");
                 }
             }
         });
@@ -330,16 +333,22 @@ public class MainFragment extends Fragment {
                 if(!txtDevId.getText().equals("")){
                     if(!editAlias.getText().toString().equals("")){
                         Log.d(LOGTAG,"Setting Alias for device [" + txtDevId.getText() + "] to -> " + editAlias.getText() + "...");
-//                        showMessage("Setting the alias for the selected pet tag [" + txtDevId.getText().toString() + "] to \'" + editAlias.getText().toString() +"\'...");
                         sendSetCommand(Helper.DD_CMD_TAG_ALIAS,txtDevId.getText().toString(),editAlias.getText().toString());
+                        nAliasLbl = editAlias.getText().toString();
+                        txtDevAlias.setText(editAlias.getText().toString());
                         editAlias.setText("");
+                        editAlias.setEnabled(false);
+                        editAlias.setEnabled(true);
+                        updateTagListAlias();
                     }
                     else{
                         Log.d(LOGTAG,"No device alias provided, not setting Alias for device [" + txtDevId.getText() + "].");
-//                        showMessage("No alias provided. Please input the alias you wish to change for the selected pet tag.");
+                        nAliasLbl = null;
+                        showMessage(mContext,"No alias provided. Please input the alias you wish to change for the selected pet tag.");
                     }
                 }else{
-//                    showMessage("No target device selected. Please select the pet tag you wish to change the alias of.");
+                    nAliasLbl = null;
+                    showMessage(mContext,"No target device selected. Please select the pet tag you wish to change the alias of.");
                 }
             }
         });
@@ -349,10 +358,9 @@ public class MainFragment extends Fragment {
             public void onClick(View v) {
                 if(!txtDevId.getText().toString().equals("")){
                     Log.d(LOGTAG,"Getting RSSI Threshold for device [" + txtDevId.getText() + "]...");
-//                    showMessage("Getting the RSSI threshold for the selected pet tag [" + txtDevId.getText().toString() + "]...");
                     sendGetCommand(Helper.DD_CMD_TAG_RSSI_THRESHOLD,txtDevId.getText().toString());
                 }else{
-//                    showMessage("No target device selected. Please select the pet tag you wish to get the RSSI threshold of.");
+                    showMessage(mContext,"No target device selected. Please select the pet tag you wish to get the RSSI threshold of.");
                 }
             }
         });
@@ -363,16 +371,18 @@ public class MainFragment extends Fragment {
                 if(!txtDevId.getText().equals("")){
                     if(!editRssiThresh.getText().toString().equals("")){
                         Log.d(LOGTAG,"Setting RSSI Threshold for device [" + txtDevId.getText() + "] to -> " + editRssiThresh.getText() + "...");
-//                        showMessage("Setting the RSSI Threshold for the selected pet tag [" + txtDevId.getText().toString() + "] to \'" + editRssiThresh.getText().toString() +"\'...");
                         sendSetCommand(Helper.DD_CMD_TAG_RSSI_THRESHOLD,txtDevId.getText().toString(),editRssiThresh.getText().toString());
+                        txtDevRssiThresh.setText(editRssiThresh.getText().toString());
                         editRssiThresh.setText("");
+                        editRssiThresh.setEnabled(false);
+                        editRssiThresh.setEnabled(true);
                     }
                     else{
                         Log.d(LOGTAG,"No device RSSI threshold provided, not setting RSSI Threshold for device [" + txtDevId.getText() + "].");
-//                        showMessage("No RSSI threshold provided. Please input the RSSI threshold you wish to change for the selected pet tag.");
+                        showMessage(mContext,"No RSSI threshold provided. Please input the RSSI threshold you wish to change for the selected pet tag.");
                     }
                 }else{
-//                    showMessage("No target device selected. Please select the pet tag you wish to change the RSSI threshold of.");
+                    showMessage(mContext,"No target device selected. Please select the pet tag you wish to change the RSSI threshold of.");
                 }
             }
         });
@@ -382,10 +392,9 @@ public class MainFragment extends Fragment {
             public void onClick(View v) {
                 if(!txtDevId.getText().toString().equals("")){
                     Log.d(LOGTAG,"Getting Debounce Threshold for device [" + txtDevId.getText() + "]...");
-//                    showMessage("Getting the debounce threshold for the selected pet tag [" + txtDevId.getText().toString() + "]...");
                     sendGetCommand(Helper.DD_CMD_TAG_DEBOUNCE_THRESHOLD,txtDevId.getText().toString());
                 }else{
-//                    showMessage("No target device selected. Please select the pet tag you wish to get the debounce threshold of.");
+                    showMessage(mContext,"No target device selected. Please select the pet tag you wish to get the debounce threshold of.");
                 }
             }
         });
@@ -396,16 +405,18 @@ public class MainFragment extends Fragment {
                 if(!txtDevId.getText().equals("")){
                     if(!editDebounceThresh.getText().toString().equals("")){
                         Log.d(LOGTAG,"Setting Debounce Threshold for device [" + txtDevId.getText() + "] to -> " + editDebounceThresh.getText() + "...");
-//                        showMessage("Setting the debounce Threshold for the selected pet tag [" + txtDevId.getText().toString() + "] to \'" + editDebounceThresh.getText().toString() +"\'...");
                         sendSetCommand(Helper.DD_CMD_TAG_DEBOUNCE_THRESHOLD,txtDevId.getText().toString(),editDebounceThresh.getText().toString());
+                        txtDevDebounceThresh.setText(editDebounceThresh.getText().toString());
                         editDebounceThresh.setText("");
+                        editDebounceThresh.setEnabled(false);
+                        editDebounceThresh.setEnabled(true);
                     }
                     else{
                         Log.d(LOGTAG,"No device Debounce threshold provided, not setting Debounce Threshold for device [" + txtDevId.getText() + "].");
-//                        showMessage("No debounce threshold provided. Please input the debounce threshold you wish to change for the selected pet tag.");
+                        showMessage(mContext,"No debounce threshold provided. Please input the debounce threshold you wish to change for the selected pet tag.");
                     }
                 }else{
-//                    showMessage("No target device selected. Please select the pet tag you wish to change the debounce threshold of.");
+                    showMessage(mContext,"No target device selected. Please select the pet tag you wish to change the debounce threshold of.");
                 }
             }
         });
@@ -415,11 +426,10 @@ public class MainFragment extends Fragment {
 //            public void onClick(View v) {
 //                if(!txtDevId.getText().equals("")){
 //                    Log.d(LOGTAG,"Getting RSSI for device [" + txtDevId.getText() + "]...");
-////                    showMessage("Getting the RSSI for the selected pet tag [" + txtDevId.getText().toString() + "]...");
 //                    sendGetCommand(Helper.DD_CMD_TAG_RSSI,txtDevId.getText().toString());
 //                }
 //                else{
-////                    showMessage("No target device selected. Please select the pet tag you wish to get the RSSI of.");
+//                    showMessage(mContext,"No target device selected. Please select the pet tag you wish to get the RSSI of.");
 //                }
 //            }
 //        });
@@ -430,11 +440,10 @@ public class MainFragment extends Fragment {
 //            public void onClick(View v) {
 //                if(!txtDevId.getText().equals("")){
 //                    Log.d(LOGTAG,"Getting Statistics for device [" + txtDevId.getText() + "]...");
-////                    showMessage("Getting the statistics for the selected pet tag [" + txtDevId.getText().toString() + "]...");
 //                    sendGetCommand(Helper.DD_CMD_TAG_STATISTICS,txtDevId.getText().toString());
 //                }
 //                else{
-////                    showMessage("No target device selected. Please select the pet tag you wish to get the statistics of.");
+//                    showMessage(mContext,"No target device selected. Please select the pet tag you wish to get the statistics of.");
 //                }
 //            }
 //        });
@@ -480,6 +489,10 @@ public class MainFragment extends Fragment {
                 if(mState == UART_PROFILE_CONNECTED){
                     Log.d(LOGTAG,"Attempting to Stop DoggyDoor motor...");
                     sendSetCommand(Helper.DD_CMD_STOP_MOTOR,"dd");
+                    // Update GUI elements based on current states
+                    if(!flagMotorForceStopped){  btnStopDoor.setText("Resume"); }
+                    else{                       btnStopDoor.setText("Stop"); }
+                    flagMotorForceStopped = !flagMotorForceStopped;
                 }
                 else{ showMessage(mContext,"Not connected to Doggy Door. Try connecting again."); }
             }
@@ -537,6 +550,7 @@ public class MainFragment extends Fragment {
                     if(!editEncLimit.getText().toString().equals("")){
                         Log.d(LOGTAG,"Setting Doggy Door Encoder Limit to -> " + editEncLimit.getText() + "...");
                         sendSetCommand(Helper.DD_CMD_DOOR_ENCODER_LIMIT,"dd",editEncLimit.getText().toString());
+                        txtEncLimit.setText(editEncLimit.getText().toString());
                         editEncLimit.setText("");
                         editEncLimit.setEnabled(false);
                         editEncLimit.setEnabled(true);
@@ -564,6 +578,7 @@ public class MainFragment extends Fragment {
                     if(!editMotorSpd.getText().toString().equals("")){
                         Log.d(LOGTAG,"Setting Doggy Door Motor Speed to -> " + editMotorSpd.getText() + "...");
                         sendSetCommand(Helper.DD_CMD_DOOR_SPEED,"dd",editMotorSpd.getText().toString());
+                        txtMotorSpd.setText(editMotorSpd.getText().toString());
                         editMotorSpd.setText("");
                         editMotorSpd.setEnabled(false);
                         editMotorSpd.setEnabled(true);
@@ -683,6 +698,13 @@ public class MainFragment extends Fragment {
         if(isActive){ tv.setBackground(picLedActive); }
         else{ tv.setBackground(picLedInactive); }
     }
+    public static void updateTagListAlias(){
+        if(mSelectedItem != -1){
+            deviceAdapter.setTempAlias(nAliasLbl);
+            txtEmptyList.setVisibility(View.GONE);
+            deviceAdapter.notifyDataSetChanged();
+        }
+    }
 
     public void populateList() {
         /* Initialize device list container */
@@ -733,6 +755,27 @@ public class MainFragment extends Fragment {
             Log.d(LOGTAG, "ADDING NEW DEVICE TO LIST....");
             deviceList.add(device);
             deviceLst.add(device);
+            deviceAdapter.setTempAlias(null);
+            txtEmptyList.setVisibility(View.GONE);
+            deviceAdapter.notifyDataSetChanged();
+        }
+    }
+    public static void addNewDevice(BluetoothDevice device, String alias) {
+        boolean deviceFound = false;
+        Log.d(LOGTAG, "addNewDevice: " + device.getAddress() + "\r\n");
+        for (BluetoothDevice listDev : deviceList) {
+            Log.d(LOGTAG, "addNewDevice: Checking stored device [" + device.getAddress() + "]...\r\n");
+            if (listDev.getAddress().equals(device.getAddress())) {
+                Log.d(LOGTAG, "addNewDevice: Found Device [" + device.getAddress() + "] in stored devices...\r\n");
+                deviceFound = true;
+                break;
+            }
+        }
+        if (!deviceFound) {
+            Log.d(LOGTAG, "ADDING NEW DEVICE TO LIST....");
+            deviceList.add(device);
+            deviceLst.add(device);
+            deviceAdapter.setTempAlias(alias);
             txtEmptyList.setVisibility(View.GONE);
             deviceAdapter.notifyDataSetChanged();
         }
@@ -850,7 +893,7 @@ public class MainFragment extends Fragment {
     }
 
     public static void clearStoredDevices(){
-        Log.d(LOGTAG, "ADDING NEW DEVICE TO LIST....");
+        Log.d(LOGTAG, "Clearing stored DoggyDoor devices....");
         deviceList.clear();
         deviceLst.clear();
         txtEmptyList.setVisibility(View.GONE);
@@ -872,21 +915,19 @@ public class MainFragment extends Fragment {
         String text;
         Integer result;
         // Error handling
-        try {
-            text = new String(resp, "UTF-8");
-        }
+        try { text = new String(resp, "UTF-8"); }
         catch (UnsupportedEncodingException e) {
             e.printStackTrace();
             result = -1;
             return result;
         }
-        Log.d(LOGTAG, "Received Response containing [" + resp.length + " bytes] from Thingy --- \'" + text + "\'.\r\n");
+        if(debug_nus_io) Log.d(LOGTAG, "Received Response containing [" + resp.length + " bytes] from Thingy --- \'" + text + "\'.\r\n");
 
         // Add response to Thingy response history, and split response using delimiters
         deviceStrList.add(text);
         text = text.replaceAll("\r", "").replaceAll("\n", "").replaceAll("\0", "");
         String[] tokens = text.split(":|\\s+");
-        Log.d(LOGTAG, "Parsed response to [" + text.getBytes().length + " bytes] = \'" + Arrays.toString(tokens) + "\'.\r\n");
+        if(debug_nus_io) Log.d(LOGTAG, "Parsed response to [" + text.getBytes().length + " bytes] = \'" + Arrays.toString(tokens) + "\'.\r\n");
 
         /** *********************************************************************************
          *   If first response token is 'get' then parse it further to be used for updating TextView's
@@ -898,7 +939,7 @@ public class MainFragment extends Fragment {
             String[] respData = Arrays.copyOfRange(tokens, 2, tokens.length);
             result = extractDdParameters(respHead,respData);
         }else if(tokens[0].equals("set")){
-            Log.d(LOGTAG, "Thingy responded with a \'set\' command [" + text + "].\r\n");
+            if(debug_nus_io) Log.d(LOGTAG, "Thingy responded with a \'set\' command [" + text + "].\r\n");
             result = 2;
         }else{
             Log.d(LOGTAG, "Thingy Responded with the following message:\r\n\t\'" + text + "\'.\r\n");
@@ -944,7 +985,7 @@ public class MainFragment extends Fragment {
     public static Integer extractDdParameters(String header, String[] data){
         int nData = data.length;
         Integer result = null;
-        Log.d(LOGTAG, "extractDdParameters --- Thingy response message contains " + nData + " valid parameters to extract.\r\n");
+        if(debug_nus_io) Log.d(LOGTAG, "extractDdParameters --- Thingy response message contains " + nData + " valid parameters to extract.\r\n");
 
         switch(header) {
             case Helper.DD_CMD_QUERY_DEVICES:{
@@ -952,8 +993,11 @@ public class MainFragment extends Fragment {
                     ntagId = data[0];
                     String[] addrTokens = Arrays.copyOfRange(data, 1, 7);
                     String tmpAddr = constructTagAddress(addrTokens);
+                    if(nData > 7) ntagAlias = data[7];
                     BluetoothDevice bleDevice = BluetoothAdapter.getDefaultAdapter().getRemoteDevice(tmpAddr);
-                    addNewDevice(bleDevice);
+
+                    if(nData == 7) addNewDevice(bleDevice);
+                    else addNewDevice(bleDevice, ntagAlias);
                 }
                 else {
                     result = -1;
@@ -1095,7 +1139,7 @@ public class MainFragment extends Fragment {
                     result = -1;
                     break;
                 }
-                Log.d(LOGTAG, "extractDdParameters --- Extracted Battery Life: " + nBatVolt + " mV (" + nBatPercent + "%).\r\n");
+                if(debug_nus_io) Log.d(LOGTAG, "extractDdParameters --- Extracted Battery Life: " + nBatVolt + " mV (" + nBatPercent + "%).\r\n");
                 updateGuiDoggyDoor(nBatVolt,nBatPercent,null,null,null,null,null,null,null);
                 result = 0;
             } break;
@@ -1138,7 +1182,7 @@ public class MainFragment extends Fragment {
                     result = -1;
                     break;
                 }
-                Log.d(LOGTAG, "extractDdParameters --- Extracted Battery Information: " + nBatVolt + " mV (" + nBatPercent + "%) -- Status = " + nChargeStatus + ".\r\n");
+                if(debug_nus_io) Log.d(LOGTAG, "extractDdParameters --- Extracted Battery Information: " + nBatVolt + " mV (" + nBatPercent + "%) -- Status = " + nChargeStatus + ".\r\n");
                 updateGuiDoggyDoor(nBatVolt,nBatPercent,nChargeStatus,null,null,null,null,null,null);
                 result = 0;
             } break;
@@ -1151,7 +1195,7 @@ public class MainFragment extends Fragment {
                     result = -1;
                     break;
                 }
-                Log.d(LOGTAG, "extractDdParameters ---- Extracted Encoder Limit = " + nEncLimit + "...\r\n");
+                if(debug_nus_io) Log.d(LOGTAG, "extractDdParameters ---- Extracted Encoder Limit = " + nEncLimit + "...\r\n");
                 updateGuiDoggyDoor(null,null,null,null,null,null,null,null,nEncLimit);
                 result = 0;
             } break;
@@ -1164,7 +1208,7 @@ public class MainFragment extends Fragment {
                     result = -1;
                     break;
                 }
-                Log.d(LOGTAG, "extractDdParameters ---- Extracted Encoder Limit = " + nMotorSpd + "...\r\n");
+                if(debug_nus_io) Log.d(LOGTAG, "extractDdParameters ---- Extracted Encoder Limit = " + nMotorSpd + "...\r\n");
                 updateGuiDoggyDoor(null,null,null,null,null,null,null,nMotorSpd,null);
                 result = 0;
             } break;
@@ -1332,11 +1376,20 @@ public class MainFragment extends Fragment {
         Context context;
         List<BluetoothDevice> devices;
         LayoutInflater inflater;
+        String tmpAliasLbl = null;
 
         public DeviceAdapter(Context context, List<BluetoothDevice> devices) {
             this.context = context;
             inflater = LayoutInflater.from(context);
             this.devices = devices;
+        }
+
+        public void setTempAlias(String text){
+            tmpAliasLbl = text;
+        }
+
+        public String getTempAlias(){
+            return tmpAliasLbl;
         }
 
         @Override
@@ -1366,11 +1419,17 @@ public class MainFragment extends Fragment {
             final TextView tvname = ((TextView) vg.findViewById(R.id.name));
             final TextView tvpaired = (TextView) vg.findViewById(R.id.paired);
             final TextView tvrssi = (TextView) vg.findViewById(R.id.rssi);
+            final TextView tvalias = (TextView) vg.findViewById(R.id.alias);
 
             tvrssi.setVisibility(View.VISIBLE);
+            if (ntagRssi != null) { tvrssi.setText("Rssi = " + ntagRssi); }
+            tvalias.setVisibility(View.VISIBLE);
 
             tvname.setText(device.getName());
             tvadd.setText(device.getAddress());
+            if(tmpAliasLbl == null) tvalias.setText("Unknown");
+            else tvalias.setText(tmpAliasLbl);
+
             if (device.getBondState() == BluetoothDevice.BOND_BONDED) {
                 Log.i(LOGTAG, "device::" + device.getName());
                 tvname.setTextColor(Color.BLACK);
@@ -1380,13 +1439,14 @@ public class MainFragment extends Fragment {
                 tvpaired.setText(R.string.paired);
                 tvrssi.setVisibility(View.VISIBLE);
                 tvrssi.setTextColor(Color.BLACK);
-
             } else {
                 tvname.setTextColor(Color.BLACK);
                 tvadd.setTextColor(Color.BLACK);
                 tvpaired.setVisibility(View.GONE);
                 tvrssi.setVisibility(View.VISIBLE);
                 tvrssi.setTextColor(Color.BLACK);
+                tvalias.setVisibility(View.VISIBLE);
+                tvalias.setTextColor(Color.BLACK);
             }
             return vg;
         }
@@ -1408,6 +1468,7 @@ public class MainFragment extends Fragment {
                     Log.i(LOGTAG, "... onActivityResult CONNECTING ----- device.address == " + tmpName + " (" + MainActivity.mDevice + ")  mserviceValue" + MainActivity.mService);
                     ((TextView)  getActivity().findViewById(R.id.deviceName)).setText(MainActivity.mDevice.getName()+ " - connecting");
                     MainActivity.mService.connect(deviceAddress);
+                    mLastBleCentralDevice = BluetoothAdapter.getDefaultAdapter().getRemoteDevice(deviceAddress);
                 }
                 else if(resultCode == Helper.RESULT_ADD_USER && data != null){
                     String deviceAddress = data.getStringExtra(BluetoothDevice.EXTRA_DEVICE);
@@ -1429,4 +1490,7 @@ public class MainFragment extends Fragment {
         }
     }
 
+    /** ==========================================================================================
+    *
+    * =========================================================================================== */
 }

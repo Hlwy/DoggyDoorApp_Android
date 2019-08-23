@@ -1,11 +1,12 @@
 package com.hunter.doggydoor;
 
-import android.app.ActionBar;
+import android.app.AlertDialog;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.content.BroadcastReceiver;
 import android.content.ComponentName;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.ServiceConnection;
@@ -31,7 +32,7 @@ import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity {
     /** *************    Constants    ****************** */
-    public static final String LOGTAG = "MainActivity";
+    public static final String LOGTAG = "YEET.MainActivity";
     private static final int UART_PROFILE_READY = 10;
     private static final int UART_PROFILE_CONNECTED = 20;
     private static final int UART_PROFILE_DISCONNECTED = 21;
@@ -43,7 +44,6 @@ public class MainActivity extends AppCompatActivity {
     public static BluetoothAdapter mBtAdapter = null;
 
     private ViewPager viewPager;
-    private ActionBar actionBar;
     private TabLayout tabLayout;
     private static final String[] tabArray = {"Main", "Control","", ""};
     private static final Integer[] tabIcons = {R.drawable.ic_home_black_36dp, R.drawable.ic_toys_black_36dp,R.drawable.baseline_android_black_18dp, R.drawable.baseline_settings_black_18dp};
@@ -121,8 +121,7 @@ public class MainActivity extends AppCompatActivity {
     *
     * ******************************************************************************************* */
     private void service_init() {
-        Intent bindIntent = new Intent(this, NusService.class);
-        bindService(bindIntent, mServiceConnection, Context.BIND_AUTO_CREATE);
+        bindService(new Intent(MainActivity.this, NusService.class), mServiceConnection, Context.BIND_AUTO_CREATE);
         LocalBroadcastManager.getInstance(this).registerReceiver(UARTStatusChangeReceiver, makeGattUpdateIntentFilter());
     }
     private static IntentFilter makeGattUpdateIntentFilter() {
@@ -145,7 +144,9 @@ public class MainActivity extends AppCompatActivity {
             }
         }
 
-        public void onServiceDisconnected(ComponentName classname) { mService = null; }
+        public void onServiceDisconnected(ComponentName classname) {
+            mService = null;
+        }
     };
 
     public final BroadcastReceiver UARTStatusChangeReceiver = new BroadcastReceiver() {
@@ -155,13 +156,13 @@ public class MainActivity extends AppCompatActivity {
             if (action.equals(NusService.ACTION_GATT_CONNECTED)) {
                 runOnUiThread(new Runnable() {
                     public void run() {
-                        Log.d(LOGTAG, "UART_CONNECT_MSG");
+                        Log.d(LOGTAG, "Connected to DoggyDoorCentral.");
                         MainFragment.btnConnectDisconnect.setText("Disconnect");
                         MainFragment.btnAddDev.setEnabled(true);
                         MainFragment.txtBatLbl.setVisibility(View.VISIBLE);
                         MainFragment.connectedDevice = mDevice.getName();
                         MainFragment.btnConnectDisconnectText = "Disconnect";
-                        // ((TextView) findViewById(R.id.deviceName)).setText(mDevice.getName() + " - ready");
+                        ((TextView) findViewById(R.id.deviceName)).setText(mDevice.getName() + " - connecting");
                         MainFragment.mState = UART_PROFILE_CONNECTED;
                         MainFragment.isConnectedToDd = true;
                     }
@@ -171,10 +172,10 @@ public class MainActivity extends AppCompatActivity {
             if (action.equals(NusService.ACTION_GATT_DISCONNECTED)) {
                 runOnUiThread(new Runnable() {
                     public void run() {
-                        Log.d(LOGTAG, "UART_DISCONNECT_MSG");
+                        Log.d(LOGTAG, "Disconnected to DoggyDoorCentral BLE GATT.");
                         MainFragment.btnConnectDisconnect.setText("Connect");
                         MainFragment.btnAddDev.setEnabled(false);
-                        // ((TextView) findViewById(R.id.deviceName)).setText("Not Connected");
+                        ((TextView) findViewById(R.id.deviceName)).setText("Not Connected");
                         MainFragment.mState = UART_PROFILE_DISCONNECTED;
                         MainFragment.connectedDevice = null;
                         MainFragment.btnConnectDisconnectText = "Connect";
@@ -188,6 +189,7 @@ public class MainActivity extends AppCompatActivity {
             }
 
             if (action.equals(NusService.ACTION_GATT_SERVICES_DISCOVERED)) {
+                ((TextView) findViewById(R.id.deviceName)).setText(mDevice.getName() + " - ready");
                 mService.enableTXNotification();
                 Helper.nonblockingWait(CONNECT_DT,false);
                 MainFragment.requestStoredDevices();
@@ -199,6 +201,7 @@ public class MainActivity extends AppCompatActivity {
                 MainFragment.queryMotorSpeed();
                 Helper.nonblockingWait(500,false);
                 MainFragment.queryDoorBattery();
+                showMessage("Connected to DoggyDoorCentral.");
             }
 
             if (action.equals(NusService.ACTION_DATA_AVAILABLE)) {
@@ -273,10 +276,41 @@ public class MainActivity extends AppCompatActivity {
     public void onResume() {
         super.onResume();
         Log.d(LOGTAG, "onResume");
+        service_init();
         if (!mBtAdapter.isEnabled()) {
             Log.i(LOGTAG, "onResume - BT not enabled yet");
             Intent enableIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
             startActivityForResult(enableIntent, Helper.REQUEST_ENABLE_BT);
+        }
+//        if(MainFragment.mLastBleCentralDevice != null){
+//            mDevice = BluetoothAdapter.getDefaultAdapter().getRemoteDevice(MainFragment.mLastBleCentralDevice.getAddress());
+//            Log.i(LOGTAG, "... onResume CONNECTING ----- device.address == " + mDevice + " || mServiceValue = " + mService);
+//            mService.connect(MainFragment.mLastBleCentralDevice.getAddress());
+//        }
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (MainFragment.mState == UART_PROFILE_CONNECTED) {
+            Intent startMain = new Intent(Intent.ACTION_MAIN);
+            startMain.addCategory(Intent.CATEGORY_HOME);
+            startMain.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(startMain);
+            showMessage("DoggyDoor's running in background.\n             Disconnect to exit");
+        }
+        else { new AlertDialog.Builder(this)
+                    .setIcon(android.R.drawable.ic_dialog_alert)
+                    .setTitle(R.string.popup_title)
+                    .setMessage(R.string.popup_message)
+                    .setPositiveButton(R.string.popup_yes, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            mService.close();
+                            finish();
+                            unbindService(mServiceConnection);
+                        }
+                    })
+                    .setNegativeButton(R.string.popup_no, null).show();
         }
     }
 
